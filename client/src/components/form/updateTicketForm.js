@@ -10,6 +10,7 @@ import {
 	Container,
 	Grid,
 	Snackbar,
+	Alert,
 } from "@mui/material";
 
 import { getAllUser } from "../../redux/actions/getAllUserAction";
@@ -161,7 +162,7 @@ export default function UpdateTicketForm({ props }) {
 						/>
 						<Box marginTop={1}>
 							{allUsers.loading ? (
-								<Typography>Loading..</Typography>
+								<Alert severity="info">Fetching User Data</Alert>
 							) : (
 								<UserSelectTicket
 									props={{

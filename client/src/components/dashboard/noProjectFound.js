@@ -14,6 +14,7 @@ export default function NoProjectFound() {
 							src={
 								"https://www.pikpng.com/pngl/b/138-1381540_copy-link-pikachu-meme-transparent-background-clipart.png"
 							}
+							alt={"suprise pikachu"}
 							style={{ objectFit: "cover", width: "150px", height: "150px" }}
 						/>
 					</div>

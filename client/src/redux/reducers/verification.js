@@ -1,15 +1,10 @@
-export const authReducer = (
-	state = { data: null, success: false, loading: true },
+export const verificationReducer = (
+	state = { data: null, success: null, loading: true },
 	action
 ) => {
 	switch (action.type) {
 		case "VERIFY_USER":
-			return {
-				...state,
-				data: null,
-				success: false,
-				loading: true,
-			};
+			return state;
 		case "VERIFY_USER_SUCCESS":
 			return {
 				...state,

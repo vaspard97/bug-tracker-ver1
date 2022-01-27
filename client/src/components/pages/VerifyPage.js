@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { userAuthentication } from "../../redux/actions/auth";
+import { userAuthentication } from "../../redux/actions/verifcation";
 import { useSearchParams, Link } from "react-router-dom";
-
 import { Container, Typography, Button, Box, Paper } from "@mui/material";
-
+import LoadingPage from "./LoadingPage";
 function VerifyPage() {
 	const dispatch = useDispatch();
-	const selector = useSelector((state) => state.authReducer);
+	const selector = useSelector((state) => state.verificationReducer);
 	const [searchParams] = useSearchParams();
 	let email = searchParams.get("email");
 	let verificationToken = searchParams.get("token");
@@ -21,10 +20,18 @@ function VerifyPage() {
 		dispatch(userAuthentication(verificationData));
 		// eslint-disable-next-line
 	}, []);
-	if (!selector.success)
-		return (
-			<Container maxWidth="sm">
-				<Paper variant="outlined">
+
+	return selector.loading ? (
+		<LoadingPage />
+	) : selector.success === false ? (
+		<Container maxWidth="lg">
+			<Paper variant="outlined">
+				<Box
+					height={"100vh"}
+					display={"flex"}
+					alignItems={"center"}
+					justifyContent={"center"}
+				>
 					<Box padding={5}>
 						<Typography textAlign="center" variant="h4" color="red">
 							{selector.data}
@@ -48,13 +55,18 @@ function VerifyPage() {
 							Return Home
 						</Button>
 					</Box>
-				</Paper>
-			</Container>
-		);
-	if (selector.success)
-		return (
-			<Container maxWidth="sm">
-				<Paper variant="outlined">
+				</Box>
+			</Paper>
+		</Container>
+	) : (
+		<Container maxWidth="lg">
+			<Paper variant="outlined">
+				<Box
+					height={"100vh"}
+					display={"flex"}
+					alignItems={"center"}
+					justifyContent={"center"}
+				>
 					<Box padding={5}>
 						<>
 							<Typography textAlign="center" variant="h4" color="green">
@@ -81,9 +93,10 @@ function VerifyPage() {
 							</Button>
 						</>
 					</Box>
-				</Paper>
-			</Container>
-		);
+				</Box>
+			</Paper>
+		</Container>
+	);
 }
 
 export default VerifyPage;

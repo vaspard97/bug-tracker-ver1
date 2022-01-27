@@ -1,19 +1,17 @@
 import { combineReducers } from "redux";
 import { userReducers } from "./reducers/user";
-import { postReducer } from "./reducers/post";
-import { authReducer } from "./reducers/auth";
+import { verificationReducer } from "./reducers/verification";
 import { signUpReducers } from "./reducers/signUpReducer";
 import { getAllUserReducer } from "./reducers/getAllUsersReducers";
-import { getAllProjectsReducers } from "./reducers/getAllProjectReducers";
 import { ticketReducers } from "./reducers/ticketReducers";
 import { updatableTicketReducers } from "./reducers/updatableTicketsReducers";
+import { projectReducers } from "./reducers/projectReducers";
 export default combineReducers({
 	userReducers,
-	postReducer,
-	authReducer,
+	projectReducers,
+	verificationReducer,
 	signUpReducers,
 	getAllUserReducer,
-	getAllProjectsReducers,
 	ticketReducers,
 	updatableTicketReducers,
 });

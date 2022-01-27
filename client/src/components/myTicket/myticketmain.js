@@ -4,7 +4,6 @@ import {
 	Typography,
 	Box,
 	Modal,
-	Button,
 	CircularProgress,
 	Divider,
 	Slide,
@@ -21,7 +20,7 @@ export default function MyTicketMain() {
 	const [selectedTicketId, setSelectedTicketId] = useState(null);
 
 	const dispatch = useDispatch();
-	const projectsSelector = useSelector((state) => state.getAllProjectsReducers);
+	const projectsSelector = useSelector((state) => state.projectReducers);
 	const myTicketsSelector = useSelector(
 		(state) => state.updatableTicketReducers
 	);
@@ -81,7 +80,7 @@ export default function MyTicketMain() {
 				</Slide>
 			</Modal>
 
-			<Box>
+			<Box marginTop={2} marginBottom={2}>
 				<Typography variant="h5" gutterBottom>
 					My Tickets
 				</Typography>
@@ -89,14 +88,18 @@ export default function MyTicketMain() {
 					View and Update all the tickets that had been assigned to you or
 					created by you.
 				</Typography>
-				<Button></Button>
 			</Box>
 
 			<Divider />
-
+			<Box marginTop={1.5} marginBottom={1.5}></Box>
 			<Box>
 				{myTicketsSelector.loading ? (
-					<Box display="flex" justifyContent="center" alignItems="center">
+					<Box
+						display={"flex"}
+						justifyContent={"center"}
+						alignItems={"center"}
+						height={"50vh"}
+					>
 						<CircularProgress />
 					</Box>
 				) : myTicketsSelector?.data?.length < 1 ? (

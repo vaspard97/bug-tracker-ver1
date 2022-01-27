@@ -8,19 +8,22 @@ export default function SignInPage() {
 
 	return (
 		<>
-			{selector.loading && <LoadingPage />}
 			{selector.data && selector.success && <Navigate to="/" />}
 
-			<Box
-				sx={{
-					marginTop: 8,
-					display: "flex",
-					flexDirection: "column",
-					alignItems: "center",
-				}}
-			>
-				<SignIn />
-			</Box>
+			{selector.loading ? (
+				<LoadingPage></LoadingPage>
+			) : (
+				<Box
+					sx={{
+						marginTop: 8,
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+					}}
+				>
+					<SignIn />
+				</Box>
+			)}
 		</>
 	);
 }

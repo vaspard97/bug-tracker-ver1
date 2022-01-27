@@ -6,6 +6,7 @@ export const getAllTicket = (projectid) => async (dispatch) => {
 		const { data } = await api.getTickets(projectid);
 		dispatch({ type: "GET_ALL_TICKET_SUCCESS", payload: data });
 	} catch (error) {
+		dispatch({ type: "GET_ALL_TICKET_ERROR" });
 		console.log(error.response.data.message);
 	}
 };
@@ -24,6 +25,11 @@ export const createTicket = (projectid, formData) => async (dispatch) => {
 		}, 3000);
 	} catch (error) {
 		console.log(error.response.data.message);
+		setTimeout(() => {
+			dispatch({
+				type: "CLEAR_TICKET_SUCCESS",
+			});
+		}, 3000);
 	}
 };
 
@@ -32,7 +38,18 @@ export const getAllMyTickets = () => async (dispatch) => {
 	try {
 		const { data } = await api.getMyTickets();
 		dispatch({ type: "GET_ALL_MY_TICKET_SUCCESS", payload: data });
+		setTimeout(() => {
+			dispatch({
+				type: "CLEAR_UPDATE_MY_TICKET_SUCCESS",
+			});
+		}, 3000);
 	} catch (error) {
+		dispatch({ type: "GET_ALL_MY_TICKET_ERROR" });
+		setTimeout(() => {
+			dispatch({
+				type: "CLEAR_UPDATE_MY_TICKET_SUCCESS",
+			});
+		}, 3000);
 		console.log(error.response.data.message);
 	}
 };
@@ -42,7 +59,18 @@ export const updateMyTicket = (ticketId, formData) => async (dispatch) => {
 	try {
 		const { data } = await api.updateMyTickets(ticketId, formData);
 		dispatch({ type: "UPDATE_MY_TICKET_SUCCESS", payload: data });
+		setTimeout(() => {
+			dispatch({
+				type: "CLEAR_UPDATE_MY_TICKET_SUCCESS",
+			});
+		}, 3000);
 	} catch (error) {
+		dispatch({ type: "UPDATE_MY_TICKET_ERROR" });
+		setTimeout(() => {
+			dispatch({
+				type: "CLEAR_UPDATE_MY_TICKET_SUCCESS",
+			});
+		}, 3000);
 		console.log(error.response.data.message);
 	}
 };

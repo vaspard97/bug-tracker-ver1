@@ -39,7 +39,6 @@ export default function UserSelectTicket({ props }) {
 		allUsers,
 		setFormData,
 		formData,
-		projectSelector,
 		selectedProject,
 		selectedTicketId,
 		setDefaultDevelopersValue,
@@ -74,7 +73,7 @@ export default function UserSelectTicket({ props }) {
 						return { value: user._id, label: user.email };
 					})
 					.filter((user) => {
-						return projectSelector.developers.includes(user.value);
+						return selectedProject.developers.includes(user.value);
 					})
 			);
 
@@ -85,7 +84,7 @@ export default function UserSelectTicket({ props }) {
 						return { value: user._id, label: user.email };
 					})
 					.filter((user) => {
-						return projectSelector.developers.includes(user.value);
+						return selectedProject.developers.includes(user.value);
 					}),
 			});
 			setIsLoading(false);

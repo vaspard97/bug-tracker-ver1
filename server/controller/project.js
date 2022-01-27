@@ -9,8 +9,8 @@ export const getOneProject = async (req, res) => {
 			_id: id,
 			developers: req.user.id,
 		})
-			.populate({ path: "developers", select: "-password" })
-			.populate({ path: "createdBy", select: "-password" });
+			.populate({ path: "developers", select: "-password -isVerified" })
+			.populate({ path: "createdBy", select: "-password -isVerified" });
 
 		if (!assignedProject)
 			return res.status(404).json({ message: "Project Does Not Exist" });
@@ -68,7 +68,7 @@ export const updateProject = async (req, res) => {
 				new: true,
 				runValidators: true,
 			}
-		);
+		).populate({ path: "createdBy", select: "firstName lastName" });
 
 		if (!project) {
 			return res.status(404).json({ message: "Project Does not exist" });

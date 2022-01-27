@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Alert } from "@mui/material";
 import { useEffect, useState } from "react";
 import Select from "react-select";
 
@@ -36,8 +36,8 @@ export default function UserSelect({ props }) {
 	const { allUsers, setFormData, formData, projectSelector, selectedId } =
 		props;
 	const [options, setOptions] = useState(null);
-	const [defaultValues, setDefaultValues] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
+
 	const { data } = allUsers;
 	const handleOnChange = (e) => {
 		setFormData({ ...formData, developers: e });
@@ -49,18 +49,11 @@ export default function UserSelect({ props }) {
 				return { value: user._id, label: user.email };
 			})
 		);
+		// eslint-disable-next-line
+	}, []);
 
+	useEffect(() => {
 		if (selectedId) {
-			setDefaultValues(
-				data?.users
-					.map((user) => {
-						return { value: user._id, label: user.email };
-					})
-					.filter((user) => {
-						return projectSelector.developers.includes(user.value);
-					})
-			);
-			setIsLoading(false);
 			setFormData({
 				...formData,
 				developers: data?.users
@@ -71,17 +64,17 @@ export default function UserSelect({ props }) {
 						return projectSelector.developers.includes(user.value);
 					}),
 			});
+			setIsLoading(false);
 		}
 
 		if (!selectedId) {
 			setIsLoading(false);
-			setDefaultValues(null);
 		}
 		// eslint-disable-next-line
-	}, []);
+	}, [selectedId !== null]);
 
 	return isLoading ? (
-		<Typography>Loading...</Typography>
+		<Alert severity="info">Fetching User Data</Alert>
 	) : (
 		<Select
 			name="developer"
@@ -91,7 +84,7 @@ export default function UserSelect({ props }) {
 			isSearchable
 			isMulti
 			onChange={handleOnChange}
-			defaultValue={defaultValues}
+			value={formData.developers}
 		/>
 	);
 }

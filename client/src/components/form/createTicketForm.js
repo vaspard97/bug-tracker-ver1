@@ -11,6 +11,7 @@ import {
 	Grid,
 	Snackbar,
 	FormLabel,
+	Alert,
 } from "@mui/material";
 
 import { getAllUser } from "../../redux/actions/getAllUserAction";
@@ -61,7 +62,8 @@ function CreateTicket({ props }) {
 		}
 
 		dispatch(createTicket(selectedProject._id, formData));
-
+		setSelectedProjectId(null);
+		setFormData(initialState);
 		showProjectForm();
 	};
 
@@ -127,7 +129,7 @@ function CreateTicket({ props }) {
 						<Box marginTop={1}>
 							<FormLabel>Developers</FormLabel>
 							{allUsers.loading ? (
-								<Typography>Loading</Typography>
+								<Alert severity="info">Fetching User Data</Alert>
 							) : (
 								<UserSelectTicket
 									props={{

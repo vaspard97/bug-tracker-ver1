@@ -1,10 +1,13 @@
 export const getAllUserReducer = (
-	state = { data: null, success: false, loading: true },
+	state = { data: null, success: null, loading: true },
 	action
 ) => {
 	switch (action.type) {
 		case "GET_ALL_USER":
-			return state;
+			return {
+				...state,
+				loading: true,
+			};
 		case "GET_ALL_USER_SUCCESS":
 			return {
 				...state,
@@ -16,7 +19,7 @@ export const getAllUserReducer = (
 			return {
 				...state,
 				data: action.payload,
-				success: true,
+				success: false,
 				loading: false,
 			};
 

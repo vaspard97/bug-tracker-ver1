@@ -10,3 +10,7 @@ export const getAllUser = () => async (dispatch) => {
 		dispatch({ type: "GET_ALL_USER_ERROR", payload: error.data });
 	}
 };
+
+export const resetGetAllUser = () => async (dispatch) => {
+	dispatch({ type: "GET_ALL_USER" });
+};

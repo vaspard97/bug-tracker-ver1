@@ -24,7 +24,7 @@ export default function ProjectDetails() {
 
 	const dispatch = useDispatch();
 	const location = useLocation();
-	const projectsSelector = useSelector((state) => state.getAllProjectsReducers);
+	const projectsSelector = useSelector((state) => state.projectReducers);
 	const ticketsSelector = useSelector((state) => state.ticketReducers);
 
 	let currentId = location.pathname.slice(1);
@@ -40,12 +40,10 @@ export default function ProjectDetails() {
 	}, []);
 
 	useEffect(() => {
-		if (selectedProject) {
-			dispatch(getAllTicket(selectedProject._id));
-		}
+		dispatch(getAllTicket(currentId));
 
 		// eslint-disable-next-line
-	}, [selectedProject !== null]);
+	}, []);
 
 	useEffect(() => {
 		if (ticketsSelector.data) {
@@ -110,12 +108,14 @@ export default function ProjectDetails() {
 						<Box display="flex" justifyContent="center" alignItems="center">
 							<CircularProgress />
 						</Box>
-					) : ticketsSelector.data.length === 0 || undefined || null ? (
-						<>
-							<Typography variant="h5" textAlign={"center"}>
-								There Is No Ticket For the Project
-							</Typography>
-						</>
+					) : ticketsSelector.data === undefined || null ? (
+						<Typography variant="h5" textAlign={"center"}>
+							Oppp! There was an error when fetching the ticket.
+						</Typography>
+					) : ticketsSelector.data.length === 0 ? (
+						<Typography variant="h5" textAlign={"center"}>
+							No Ticket have been created for the project.
+						</Typography>
 					) : (
 						ticketsSelector?.data?.map((item) => {
 							return (

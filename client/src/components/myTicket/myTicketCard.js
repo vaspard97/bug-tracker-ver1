@@ -18,6 +18,7 @@ import {
 	Grow,
 	useMediaQuery,
 } from "@mui/material";
+import { blue, green, deepOrange } from "@mui/material/colors";
 
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import {
@@ -66,11 +67,29 @@ export default function MyTicketCard({ props }) {
 		paddingTop: 0,
 		padingBottom: "16px",
 	};
+	const myBlue = blue[500];
+	const myGreen = green[500];
+	const myDeepOrange = deepOrange[500];
+	let borderColor = null;
+	if (item.status === "progress") {
+		borderColor = myDeepOrange;
+	}
+	if (item.status === "open") {
+		borderColor = myBlue;
+	}
+	if (item.status === "resolved") {
+		borderColor = myGreen;
+	}
 
+	const borderStyle = {
+		marginBottom: "12px",
+		borderLeftColor: borderColor,
+		borderLeftWidth: "5px",
+	};
 	return (
 		<ThemeProvider theme={theme}>
 			<Grow appear={true} in={true}>
-				<Card variant="outlined" sx={{ marginBottom: "12px" }}>
+				<Card variant="outlined" sx={borderStyle}>
 					<Grid container direction={"row"}>
 						<Grid item xs={12} sm={9}>
 							<Box padding={2}>

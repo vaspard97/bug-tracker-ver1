@@ -6,9 +6,9 @@ export const updatableTicketReducers = (
 		case "GET_ALL_MY_TICKET":
 			return state;
 		case "GET_ALL_MY_TICKET_SUCCESS":
-			return { ...state, data: action.payload, success: true, loading: false };
+			return { ...state, data: action.payload, success: null, loading: false };
 		case "GET_ALL_MY_TICKET_ERROR":
-			return { ...state, data: action.payload, success: false, loading: false };
+			return { ...state, data: null, success: false, loading: false };
 		case "UPDATE_MY_TICKET":
 			return { ...state, loading: true };
 		case "UPDATE_MY_TICKET_SUCCESS":
@@ -19,8 +19,6 @@ export const updatableTicketReducers = (
 			return { ...state, data: updatedData, success: true, loading: false };
 		case "CLEAR_UPDATE_MY_TICKET_SUCCESS":
 			return { ...state, success: null };
-		case "CREATE_UPDATE_MY_TICKET_ERROR":
-			return { ...state, data: action.payload, success: false, loading: false };
 
 		default:
 			return state;

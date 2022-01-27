@@ -7,7 +7,7 @@ import SuccessSignUpPage from "./components/pages/SuccessSignUpPage";
 import SignInPage from "./components/pages/SignInPage";
 import PrivatePage from "./components/pages/PrivatePage";
 import MyTicketMain from "./components/myTicket/myticketmain";
-import DataTable from "./components/dashboard/dashboard";
+import Dashboard from "./components/dashboard/dashboardMain";
 import AdminTable from "./components/dashboard/admin";
 import VerifyPage from "./components/pages/VerifyPage";
 import ProjectDetails from "./components/dashboard/projectDetailsMain";
@@ -22,7 +22,7 @@ function App() {
 		<Router>
 			<Routes>
 				<Route path="/" element={<PrivatePage />}>
-					<Route index element={<DataTable />} />
+					<Route index element={<Dashboard />} />
 					<Route path="/:id" element={<ProjectDetails />}></Route>
 					<Route path="ticket" element={<MyTicketMain />} />
 					<Route path="admin" element={<AdminTable />} />

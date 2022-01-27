@@ -8,12 +8,17 @@ import {
 	Box,
 	Typography,
 	Container,
+	Snackbar,
+	Alert,
 } from "@mui/material";
 
 import { getAllUser } from "../../redux/actions/getAllUserAction";
-import { getProjects } from "../../redux/actions/getAllProjectsAction";
-import { createProjects, updateProject } from "../../redux/actions/post";
+import {
+	createProject,
+	updateProject,
+} from "../../redux/actions/projectAction";
 import UserSelect from "./userSelect";
+import FormAlert from "./formAlert";
 
 let initialState = {
 	title: "",
@@ -23,25 +28,39 @@ let initialState = {
 
 function CreateProject({ props }) {
 	const { showProjectForm, setSelectedId, selectedId } = props;
+	const [formData, setFormData] = useState(initialState);
+	const [formError, setFormError] = useState(false);
+
 	const dispatch = useDispatch();
 
 	const projectSelector = useSelector((state) =>
-		state.getAllProjectsReducers?.data?.find((item) => item._id === selectedId)
+		state.projectReducers?.data?.find((item) => item._id === selectedId)
 	);
-
 	const allUsers = useSelector((state) => state.getAllUserReducer);
-	const [formData, setFormData] = useState(initialState);
+
+	const handleFormError = () => {
+		setFormError(!formError);
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		if (
+			formData.title === "" ||
+			formData.description === "" ||
+			formData.developers.length === 0
+		) {
+			handleFormError();
+			return;
+		}
 		if (!selectedId) {
-			dispatch(createProjects(formData));
+			dispatch(createProject(formData));
 		}
 
 		if (selectedId) {
 			dispatch(updateProject(selectedId, formData));
 		}
-		dispatch(getProjects());
+		setFormData(initialState);
+		setSelectedId(null);
 		showProjectForm();
 	};
 
@@ -61,15 +80,16 @@ function CreateProject({ props }) {
 	}, []);
 
 	useEffect(() => {
-		if (projectSelector && selectedId) {
+		if (selectedId) {
 			setFormData({
 				...formData,
 				title: projectSelector.title,
 				description: projectSelector.description,
+				developers: projectSelector.developers,
 			});
 		}
 		// eslint-disable-next-line
-	}, [selectedId !== null]);
+	}, [getAllUser.loading === false]);
 	return (
 		<Container component="main" maxWidth={"md"}>
 			<Card variant="outlined">
@@ -83,7 +103,9 @@ function CreateProject({ props }) {
 						maxWidth: "100%",
 					}}
 				>
-					<Typography variant="h5">Create New Project</Typography>
+					<Typography variant="h5">
+						{selectedId ? <>Update Project</> : <>Create Project</>}
+					</Typography>
 
 					<Box
 						component="form"
@@ -113,7 +135,7 @@ function CreateProject({ props }) {
 						/>
 						<Box marginTop={2}>
 							{allUsers.loading ? (
-								<Typography>Loading..</Typography>
+								<Alert severity="info">Fetching User Data</Alert>
 							) : (
 								<UserSelect
 									props={{
@@ -145,6 +167,18 @@ function CreateProject({ props }) {
 							Cancel
 						</Button>
 					</Box>
+					<Snackbar
+						open={formError}
+						autoHideDuration={3000}
+						onClose={handleFormError}
+					>
+						<FormAlert
+							props={{
+								severity: "warning",
+								message: "Please Fill In All Fields",
+							}}
+						/>
+					</Snackbar>
 				</Box>
 			</Card>
 		</Container>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjects } from "../../redux/actions/getAllProjectsAction";
+// import { getProjects } from "../../redux/actions/getAllProjectsAction";
+import { getProjects } from "../../redux/actions/projectAction";
 import {
 	Typography,
 	Button,
@@ -8,6 +9,7 @@ import {
 	Modal,
 	Divider,
 	CircularProgress,
+	Slide,
 } from "@mui/material";
 import ProjectCard from "./projectCard";
 import CreateProject from "../form/createProject";
@@ -16,15 +18,14 @@ export default function DataTable() {
 	const [isProjectFormVisible, setIsProjectFormVisible] = useState(false);
 	const [selectedId, setSelectedId] = useState(null);
 	const dispatch = useDispatch();
-	const projectsSelector = useSelector((state) => state.getAllProjectsReducers);
+	const projectsSelector = useSelector((state) => state.projectReducers);
 	const userSelector = useSelector((state) => state.userReducers);
-
 	const showProjectForm = () => {
 		setIsProjectFormVisible(!isProjectFormVisible);
 	};
 
 	useEffect(() => {
-		if (userSelector?.success === true) {
+		if (userSelector.data !== null) {
 			dispatch(getProjects());
 		}
 
@@ -33,12 +34,25 @@ export default function DataTable() {
 
 	return (
 		<>
-			<Box marginTop={2} marginBottom={2}>
-				<Box display="flex" marginBottom={2}>
-					<Box flexGrow={1}>
-						<Typography variant="h5">Dashboard</Typography>
+			<Modal open={isProjectFormVisible}>
+				<Slide in={isProjectFormVisible} direction={"down"}>
+					<Box
+						height={"100%"}
+						display={"flex"}
+						alignItems={"center"}
+						justifyContent={"center"}
+					>
+						<CreateProject
+							props={{ showProjectForm, setSelectedId, selectedId }}
+						/>
 					</Box>
-				</Box>
+				</Slide>
+			</Modal>
+
+			<Box marginTop={2} marginBottom={2}>
+				<Typography variant="h5" gutterBottom>
+					Dashboard
+				</Typography>
 				<Typography>
 					View and Update all the Projects that had been assigned to you or
 					created by you.
@@ -52,30 +66,24 @@ export default function DataTable() {
 					variant="contained"
 					onClick={showProjectForm}
 					size={"small"}
-					disabled={projectsSelector.loading}
+					disabled={projectsSelector?.loading}
 				>
 					Create Project
 				</Button>
 			</Box>
 
-			<Modal open={isProjectFormVisible}>
+			{projectsSelector?.loading ? (
 				<Box
-					height={"100%"}
-					display={"flex"}
-					alignItems={"center"}
-					justifyContent={"center"}
+					display="flex"
+					justifyContent="center"
+					alignItems="center"
+					height={"50vh"}
 				>
-					<CreateProject
-						props={{ showProjectForm, setSelectedId, selectedId }}
-					/>
-				</Box>
-			</Modal>
-
-			{projectsSelector.loading ? (
-				<Box display="flex" justifyContent="center" alignItems="center">
 					<CircularProgress />
 				</Box>
-			) : projectsSelector?.data?.length === 0 || undefined || null ? (
+			) : projectsSelector?.data === undefined || null ? (
+				<Typography variant="h5">Opppss! seem like there was error</Typography>
+			) : projectsSelector?.data?.length === 0 ? (
 				<NoProjectFound />
 			) : (
 				projectsSelector.data.map((item) => {

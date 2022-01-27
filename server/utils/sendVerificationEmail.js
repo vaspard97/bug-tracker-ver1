@@ -7,6 +7,7 @@ export const sendVerificationEmail = async ({
 	origin,
 }) => {
 	origin = "http://localhost:3000";
+	let newOrgin = "";
 	const verificationUrl = `http://localhost:3000/user/verify-email?token=${verificationToken}&email=${email}`;
 	const message = `
       <h1>Hello ${name}</h1>
